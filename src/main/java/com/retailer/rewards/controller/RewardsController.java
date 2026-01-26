@@ -17,7 +17,7 @@ public class RewardsController {
 
     @GetMapping("/version")
     public String v() {
-        return "v3";
+        return "v4";
     }
 
     @GetMapping("/{customerId}")
