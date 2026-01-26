@@ -25,14 +25,24 @@ pipeline {
         stage('Deploy') {
           steps {
             sh '''
-              set -euo pipefail
+              set -eu
+
               JAR="$(ls -1 target/*.jar | head -n 1)"
+              echo "Deploying $JAR"
               cp "$JAR" /opt/myapp/current/app.jar
+
               sudo -n /bin/systemctl restart myapp
-              sudo -n /bin/systemctl is-active --quiet myapp || (sudo -n /bin/systemctl status myapp --no-pager; exit 1)
+
+              sudo -n /bin/systemctl is-active --quiet myapp || (
+                sudo -n /bin/systemctl status myapp --no-pager
+                exit 1
+              )
+
+              echo "myapp is active."
             '''
           }
         }
+
 
     }
 }
