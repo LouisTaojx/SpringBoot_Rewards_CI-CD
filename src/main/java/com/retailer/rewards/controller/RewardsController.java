@@ -15,6 +15,11 @@ import java.time.LocalDate;
 public class RewardsController {
     private final RewardsService rewardsService;
 
+    @GetMapping("/version")
+    public String v() {
+        return "v2";
+    }
+
     @GetMapping("/{customerId}")
     public RewardReportDto getRewards(
             @PathVariable Long customerId,
