@@ -23,15 +23,16 @@ pipeline {
         }
 
         stage('Deploy') {
-            steps {
-                sh '''
-                  set -e
-                  JAR=$(ls target/*.jar | head -n 1)
-                  cp "$JAR" /opt/myapp/current/app.jar
-                  sudo systemctl restart myapp
-                  sudo systemctl status myapp --no-pager
-                '''
-            }
+          steps {
+            sh '''
+              set -euo pipefail
+              JAR="$(ls -1 target/*.jar | head -n 1)"
+              cp "$JAR" /opt/myapp/current/app.jar
+              sudo -n /bin/systemctl restart myapp
+              sudo -n /bin/systemctl is-active --quiet myapp || (sudo -n /bin/systemctl status myapp --no-pager; exit 1)
+            '''
+          }
         }
+
     }
 }
