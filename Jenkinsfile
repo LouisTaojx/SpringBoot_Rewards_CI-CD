@@ -27,8 +27,9 @@ pipeline {
                 sh '''
                   set -e
                   JAR=$(ls target/*.jar | head -n 1)
-                  sudo cp "$JAR" /opt/myapp/current/app.jar
+                  cp "$JAR" /opt/myapp/current/app.jar
                   sudo systemctl restart myapp
+                  sudo systemctl status myapp --no-pager
                 '''
             }
         }
