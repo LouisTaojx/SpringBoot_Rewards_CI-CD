@@ -33,15 +33,19 @@ pipeline {
 
               sudo -n /bin/systemctl restart myapp
 
-              sudo -n /bin/systemctl is-active --quiet myapp || (
-                sudo -n /bin/systemctl status myapp --no-pager
+              # must match sudoers exactly: no extra flags
+              STATUS="$(sudo -n /bin/systemctl is-active myapp || true)"
+              if [ "$STATUS" != "active" ]; then
+                echo "myapp is not active: $STATUS"
+                sudo -n /bin/systemctl status myapp
                 exit 1
-              )
+              fi
 
               echo "myapp is active."
             '''
           }
         }
+
 
 
     }
