@@ -17,6 +17,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class PurchaseTransaction {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
